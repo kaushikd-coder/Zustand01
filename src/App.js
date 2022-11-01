@@ -1,23 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import useStore from './app/store';
+import { useEffect, useState } from 'react';
+import Input from './input';
 
 function App() {
+  
+  const people = useStore((state) => state.Persons)
+  const toogleDarkMode = useStore((state) => state.toogleDarkMode)
+  const dark = useStore((state) => state.dark);
+
+  useEffect(() => {
+        if(dark){
+          document.querySelector('body').classList.add('dark')
+        }else{
+          document.querySelector('body').classList.remove('dark')
+        }
+  },[dark])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Input />
+     <h1> Welcome to Zustand State ManageMent Library </h1>
+     <h3>Right now we have only {people.length} people onboard</h3>
+     <button onClick={toogleDarkMode}>DarkMode</button>
+     <ul>
+        {people.map((e) => {
+          return(
+            <div key={e.id}>
+              <li>{e}</li>
+            </div>
+          )
+        })}
+     </ul>
     </div>
   );
 }
